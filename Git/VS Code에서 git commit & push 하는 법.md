@@ -1,4 +1,4 @@
-vs code를 통해 깃허브에 TIL을 작성하는데 commit과 push하는 방법이 헷갈려서 정리하기 위함입니다.
+vs code를 통해 깃허브에 TIL을 작성하는데 commit과 push하는 방법을 까먹어서 기억하기위해 작성합니다.
 
 ### commit, push 순서
 

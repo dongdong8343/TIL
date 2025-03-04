@@ -4,7 +4,12 @@
 
 추가로 아래 사진처럼 Dto 파일 이름들이 있으니까 언제 사용하는 DTO인지 한 눈에 파악하기 어려웠다. 그래서 API당 이너 클래스를 사용해서 관리하면 가독성이 더 좋아질 것 같았다.
 
-![alt text](image.png)
+<center>
+  <img
+    src="https://github.com/user-attachments/assets/a5ee3a0b-0a44-4fce-805c-c2c5307a48c2"
+    width="30%"
+  />
+</center>
 
 적용해 볼 코드는 아래와 같다.
 
@@ -54,7 +59,12 @@ public class PostsSaveResponseDto {
 
 그래서 아래와 같이 API별로 DTO를 구분해서 정리를 해봤다.
 
-![alt text](image-1.png)
+<center>
+  <img
+    src="https://github.com/user-attachments/assets/b29a4528-04a3-4a22-917b-4491cca65997"
+    width="30%"
+  />
+</center>
 
 SavePost 안의 코드는 아래와 같다.
 

@@ -6,7 +6,7 @@
 
 <center>
   <img
-    src="https://github.com/user-attachments/assets/5b00f8be-292e-446b-9ab7-22c5c2c526d6"
+    src="https://github.com/user-attachments/assets/a4ac4faa-238e-4fe6-8e8e-0f94b6b03a9b"
     width="100%"
   />
 </center>
@@ -15,7 +15,7 @@
 
 <center>
   <img
-    src="https://github.com/user-attachments/assets/dfc76bb1-cb34-4a6b-a3c0-5a2c1b81580c"
+    src="https://github.com/user-attachments/assets/ba9c9647-a549-48f8-aee9-88e5b9724db9"
     width="100%"
   />
 </center>

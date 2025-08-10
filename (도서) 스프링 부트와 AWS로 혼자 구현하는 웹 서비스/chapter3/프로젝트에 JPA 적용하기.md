@@ -165,11 +165,18 @@ spring.jpa.show-sql=true
 근데 저 코드만 넣으면 h2 데이터베이스 쿼리로 보여져서 MySQL 쿼리로 변경해서 보고싶다면 아래 코드를 작성해줘야한다. 근데 이거는 버전 별로 달라질 수 있어서 공식문서를 통해 확인하고 작성하는 것이 바람짐하다.
 
 ```java
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
-spring.jpa.properties.hibernate.dialect.storage_engine=innodb
-spring.datasource.hikari.jdbc-url=jdbc:h2:mem://localhost/~/testdb;MODE=MYSQL
-spring.h2.console.enabled=true
+spring:
+  jpa:
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+  datasource:
+    // DB url 설정
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
 ```
 
 그럼 이제 DB에 작업을 진행하면 콘솔에서 MySQL 쿼리로 확인할 수 있게된다.

@@ -98,10 +98,7 @@ JAR_NAME=$(ls -tr $REPOSITORY/ | grep jar | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
 
-nohup java -jar \
-	-Dspring.config.location=classpath:/application.properties,/home/ec2-user/app/application-oauth.properties,/home/ec2-user/app/application-real-db.properties,classpath:/application-real.properties
-	-Dspring.profiles.active=real \
-	$REPOSITORY/$JAR_NAME 2>&1 &
+nohup java -jar $REPOSITORY/$JAR_NAME 2>&1 &
 ```
 
 3. 스크립트에 실행 권한 추가
@@ -122,4 +119,124 @@ nohup java -jar \
 
 ## 외부 시큐리티 파일 등록하기
 
-1.
+1. app 디렉토리에 yml 파일 생성
+
+`vim /home/ec2-user/app/application-oauth.yml`
+
+2. 생성한 파일에 application-oauth.yml 파일 내용 그대로 복붙하기
+
+   복붙하고 저장하고 나온다(:wq)
+
+3. 방금 생성한 yml 파일을 사용하도록 deploy.sh 파일 수정
+
+   ```
+   nohup java -jar \
+   -Dspring.config.location=classpath:/application.properties, /home/ec2-user/app/application-oauth.properties \
+   $REPOSITORY/$JAR_NAME 2>&1 &
+   ```
+
+4. 다시 deploy.sh 실행
+
+## 스프링부트 프로젝트로 RDS 접근하기
+
+현재 MariaDB를 사용 중이다. MariaDB에서 스프링부트 프로젝트를 실행하기 위해서는 아래 작업들을 해줘야 한다.
+
+1. 프로젝트 설정
+
+   - mariadb 드라이버를 build.gradle에 등록
+
+   `implementation 'org.mariadb.jdbc:mariadb-java-client'`
+
+   - application-real.yml 파일 작성
+
+   실제 운영될 환경이기 때문에 보안/로그상 이슈가 될 만한 설정들을 모두 제거
+
+   작성 후 push함
+
+   ```yml
+   spring:
+     profiles:
+       include:
+         - oauth
+         - real-db
+
+     jpa:
+       properties:
+       hibernate:
+         dialect: org.hibernate.dialect.MySQLDialect
+
+     session:
+       store-type: jdbc
+   ```
+
+2. EC2 설정
+
+   rds 접속 정보도 보호해야할 정보라서 ec2 서버에 설정 파일을 작성한다.
+
+   app 디렉토리에 application-real-db.yml 파일 생성
+
+   `vim ~/app/application-real-db.yml`
+
+   ```yml
+   spring:
+   jpa:
+     hibernate:
+     ddl-auto: none
+   datasource:
+     url: jdbc:mariadb://DB주소:포트번호/DB이름
+     username: db계정
+     password: db비번
+     driver-class-name: org.mariadb.jdbc.Driver
+   ```
+
+   deploy.sh가 real profile을 사용할 수 있도록 수정
+
+   (참고) \는 줄바꿈을 의미함
+
+   ```
+    ...
+    nohup java \
+    -Dspring.profiles.active=real \
+    -Dspring.config.location="classpath:/application.yml,file:/home/ec2-user/app/application-oauth.yml,file:/home/ec2-user/app/application-real-db.yml,classpath:/application-real.yml" \
+    -jar "$REPOSITORY/$JAR_NAME" \
+    > "$REPOSITORY/app.log" 2>&1 &
+   ```
+
+## EC2에서 소셜 로그인하기
+
+1. EC2에 8080포트로 배포됐으니 8080 포트가 보안 그룹에 열려있는지 확인
+
+<center>
+  <img
+    src="https://github.com/user-attachments/assets/ee46b7a7-5b9d-4a95-b766-1594feae2581"
+    width="50%"
+  />
+</center>
+
+2. AWS EC2 도메인으로 접속
+
+   EC2의 퍼블릭 DNS를 복사해서 :8080을 붙여 브라우저로 접속해본다. 그럼 접속이 잘되는것을 확인할 수 있다.
+
+<center>
+     <img
+        src="https://github.com/user-attachments/assets/6ba72ea7-7e42-40d8-aa74-2558608c5535"
+        width="50%"
+     />
+</center>
+
+그러나 현재 구글과 네이버 로그인은 동작하지 않는다. 그 이유는 해당 서비스에 EC2의 도메인을 등록하지 않았기 때문이다.
+
+3. 구글에 EC2 주소 등록
+
+   구글 API 콘솔로 접속 > 브랜딩 > 승인된 도메인에 EC2의 퍼블릭 DNS 등록
+
+4. 네이버에 EC2 주소 등록
+
+   네이버 개발자 센터 > 내 프로젝트 > API 설정 > 서비스 URL, Callback URL 수정
+
+<center>
+     <img
+        src="https://github.com/user-attachments/assets/57ed1cf9-ee74-4f82-8f42-7caad79caeb5"
+        width="50%"
+     />
+</center>

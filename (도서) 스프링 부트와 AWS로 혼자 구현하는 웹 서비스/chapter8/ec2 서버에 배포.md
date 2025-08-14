@@ -217,26 +217,54 @@ nohup java -jar $REPOSITORY/$JAR_NAME 2>&1 &
 
    EC2의 퍼블릭 DNS를 복사해서 :8080을 붙여 브라우저로 접속해본다. 그럼 접속이 잘되는것을 확인할 수 있다.
 
-<center>
-     <img
-        src="https://github.com/user-attachments/assets/6ba72ea7-7e42-40d8-aa74-2558608c5535"
-        width="50%"
-     />
-</center>
+    <center>
+        <img
+            src="https://github.com/user-attachments/assets/6ba72ea7-7e42-40d8-aa74-2558608c5535"
+            width="50%"
+        />
+    </center>
 
-그러나 현재 구글과 네이버 로그인은 동작하지 않는다. 그 이유는 해당 서비스에 EC2의 도메인을 등록하지 않았기 때문이다.
+   그러나 현재 구글과 네이버 로그인은 동작하지 않는다. 그 이유는 해당 서비스에 EC2의 도메인을 등록하지 않았기 때문이다.
 
 3. 구글에 EC2 주소 등록
 
    구글 API 콘솔로 접속 > 브랜딩 > 승인된 도메인에 EC2의 퍼블릭 DNS 등록
 
+   퍼블릭 DNS를 등록하려고 하니까 잘못된 도메인이라고 뜨는 것이다.. 그래서 아래 링크에 해결 방법을 작성해놨다.
+
+   [EC2와 구매한 도메인 연결](https://github.com/dongdong8343/TIL/blob/main/aws/EC2%EC%99%80%20%EA%B5%AC%EB%A7%A4%ED%95%9C%20%EB%8F%84%EB%A9%94%EC%9D%B8%20%EC%97%B0%EA%B2%B0.md)
+
+   그리고 아래 사진에 구매한 도메인을 입력해주면 된다.
+
+    <center>
+        <img
+            src="https://github.com/user-attachments/assets/aaa0cbac-0ee5-4bb7-bfd5-2a1dfaf52a30"
+            width="50%"
+        />
+    </center>
+
+   프로젝트 > 사용자 인증정보 > 프로젝트 클릭 > 승인된 리디렉션 URI에 추가
+
+   `http://구매한 도메인/login/oauth2/code/google`
+
+    <center>
+        <img
+            src="https://github.com/user-attachments/assets/7e5b9b36-bfe2-4a35-95c8-c90699b17040"
+            width="50%"
+        />
+    </center>
+
 4. 네이버에 EC2 주소 등록
 
    네이버 개발자 센터 > 내 프로젝트 > API 설정 > 서비스 URL, Callback URL 수정
 
+   퍼블릭 DNS를 넣어주면 됨
+
+   Callback URL은 `퍼블릭 DNS:8080/login/oauth2/code/naver` 붙여준다.
+
 <center>
      <img
-        src="https://github.com/user-attachments/assets/57ed1cf9-ee74-4f82-8f42-7caad79caeb5"
+        src="https://github.com/user-attachments/assets/af2391fa-ba53-46f1-bb63-9253cf0fba7a"
         width="50%"
      />
 </center>

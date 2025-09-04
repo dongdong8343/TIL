@@ -205,10 +205,11 @@ nohup java -jar $REPOSITORY/$JAR_NAME 2>&1 &
 ## EC2에서 소셜 로그인하기
 
 1. EC2에 8080포트로 배포됐으니 8080 포트가 보안 그룹에 열려있는지 확인
+<img width="1471" height="468" alt="image" src="" />
 
 <center>
   <img
-    src="https://github.com/user-attachments/assets/ee46b7a7-5b9d-4a95-b766-1594feae2581"
+    src="https://github.com/user-attachments/assets/8bc59dd6-8be4-41e8-9b54-060542ab2e63"
     width="50%"
   />
 </center>
